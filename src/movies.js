@@ -19,18 +19,74 @@ function howManyMovies(movies) {
 }
 
 // Iteration 3: All rates average - Get the average of all rates with 2 decimals
+
 function ratesAverage(movies) {
-  const avgRates = movies.reduce((prev, curr) => {
-    return prev + (curr % 2);
+  if (movies.length === 0) {
+    return 0;
+  }
+
+  const rates = movies.map((movie) => {
+    return movie.rate;
   });
-  return avgRates();
+
+  const ratesSum = rates.reduce((accumulator, currentValue) => {
+    if (currentValue) {
+      return accumulator + currentValue;
+    } else {
+      return accumulator;
+    }
+  });
+
+  return Number((ratesSum / rates.length).toFixed(2));
 }
 
 // Iteration 4: Drama movies - Get the average of Drama Movies
 
+function dramaMoviesRate(movies) {
+  let dramaMovies = 0;
+
+  let totalDramaMovies = movies.reduce(function (accumulator, movie) {
+    if (!movie.genre.includes("Drama")) {
+      return accumulator;
+    }
+    if (movie.genre.includes("Drama")) {
+      dramaMovies += 1;
+      return accumulator + movie.rate;
+    }
+  }, 0);
+  if (totalDramaMovies === 0) {
+    return 0;
+  }
+  return parseFloat((totalDramaMovies / dramaMovies).toFixed(2));
+}
+
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
 
+function orderByYear(movies) {
+  const sortMovies = movies
+    .map(function (item) {
+      return item;
+    })
+    .sort(function (movie1, movie2) {
+      if (movie1.year < movie2.year) {
+        return -1;
+      } else if (movie1.year > movie2.year) {
+        return 1;
+      } else if (movie1.year === movie2.year) {
+        return movie1.title.localeCompare(movie2.title);
+      }
+    });
+  return sortMovies;
+}
+
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
+
+function orderAlphabetically(movies) {
+  const orderByAlpha = movies.map(function (movie) {
+    return movie.title;
+  });
+  return orderByAlpha.sort().slice(0, 20);
+}
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 
