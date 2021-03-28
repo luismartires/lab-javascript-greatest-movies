@@ -89,5 +89,72 @@ function orderAlphabetically(movies) {
 }
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
+// "2h"
+function convertHours(hourString) {
+  let calculateHour = hourString.split("h");
+  return calculateHour[0] * 60;
+}
+
+// "33min"
+function convertMinutes(minuteString) {
+  let calculateMinutes = minuteString.split("min");
+  return Number(calculateMinutes[0]);
+}
+
+function convertDuration(duration) {
+  let timePieces = duration.split(" ");
+  // ["2h", "33min"]
+  // ["2h"]
+  // ["33min"]
+
+  let minutes = timePieces.reduce((sum, onePiece) => {
+    if (onePiece.includes("h")) {
+      return sum + convertHours(onePiece);
+    }
+    return sum + convertMinutes(onePiece);
+  }, 0);
+
+  return minutes;
+}
+
+function turnHoursToMinutes(movies) {
+  let newCentArray = movies.map((oneMovie) => {
+    let newMovie = {};
+    newMovie.title = oneMovie.title;
+    newMovie.year = oneMovie.year;
+    newMovie.director = oneMovie.director;
+    newMovie.duration = convertDuration(oneMovie.duration);
+    newMovie.genre = oneMovie.genre;
+    newMovie.rate = oneMovie.rate;
+
+    return newMovie;
+  });
+
+  return newCentArray;
+}
 
 // BONUS - Iteration 8: Best yearly rate average - Best yearly rate average
+
+function bestYearAvg(lotsOfMovies) {
+  if (!lotsOfMovies.length) return null;
+
+  let masterObject = {};
+
+  lotsOfMovies.forEach((eachMovie) => {
+    if (!masterObject[eachMovie.year]) {
+      masterObject[eachMovie.year] = [eachMovie];
+    } else {
+      masterObject[eachMovie.year].push(eachMovie);
+    }
+  });
+
+  let highest = 0;
+  let theActualYear;
+  for (let theYear in masterObject) {
+    if (ratesAverage(masterObject[theYear]) > highest) {
+      highest = ratesAverage(masterObject[theYear]);
+      theActualYear = theYear;
+    }
+  }
+  return `The best year was ${theActualYear} with an average rate of ${highest}`;
+}
